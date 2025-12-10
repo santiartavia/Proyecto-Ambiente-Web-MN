@@ -1,0 +1,279 @@
+<?php include "php/conexion.php"; ?>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>MediConnect</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+
+<body class="bg-moss">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-moss-deep shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#"><i class="bi bi-heart-pulse me-1"></i>MediConnect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="#" data-section="home">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="paciente">Paciente</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="doctor">Doctor</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="admin">Administrador</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="soporte">Soporte</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-gradient text-white py-5">
+    <div class="container">
+      <h1 class="display-6 fw-bold mb-2">Portal de Gestión de Citas</h1>
+      <p class="mb-0 opacity-75">POR TU SALUD, BIENESTAR Y TRANQUILIDAD.</p>
+    </div>
+  </header>
+
+  <main class="py-5">
+    <div class="container">
+
+      <!-- ====================== HOME ====================== -->
+      <section id="home" class="mc-section">
+        <div class="row g-4">
+          
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-calendar2-week me-1"></i> Citas</h5>
+                <p class="text-secondary small">Agenda tu cita aquí</p>
+                <button id="btnCargar" class="btn btn-moss btn-sm" data-section="paciente">Ir a Paciente</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-people me-1"></i> Roles</h5>
+                <p class="text-secondary small">Paciente, Doctor y Admin.</p>
+
+                <select id="select-rol" class="form-select form-select-sm">
+                  <option value="">Seleccione un rol…</option>
+                  <option value="Paciente">Paciente</option>
+                  <option value="Doctor">Doctor</option>
+                  <option value="Administrador">Administrador</option>
+                </select>
+
+                <div class="small mt-2">
+                  Rol seleccionado: <span id="texto-rol" class="fw-semibold">—</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- FORM REGISTRO SIMPLE (NO BD) -->
+          <div class="col-md-4">
+            <form id="formulario" class="card shadow-sm">
+              <div class="card-body">
+                <h6 class="fw-semibold mb-3"><i class="bi bi-person-plus me-1"></i> Formulario</h6>
+
+                <div class="mb-2"><input name="nombre" class="form-control form-control-sm" placeholder="Nombre"></div>
+                <div class="mb-2"><input name="apellidos" class="form-control form-control-sm" placeholder="Apellidos"></div>
+                <div class="mb-2"><input name="correo" class="form-control form-control-sm" type="email" placeholder="Correo"></div>
+
+                <button class="btn btn-cream btn-sm" type="submit">Enviar</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================== PACIENTE ====================== -->
+      <section id="paciente" class="mc-section d-none">
+        <div class="row g-4">
+
+          <!-- FORM AGREGAR CITA -->
+          <div class="col-lg-5">
+            <div class="card shadow-sm">
+              <div class="card-header bg-cream fw-semibold"><i class="bi bi-plus-circle me-1"></i> Solicitar cita</div>
+              <div class="card-body">
+                <form id="formCita">
+                  <div class="mb-2"><input id="pacienteNombre" class="form-control" placeholder="Paciente"></div>
+
+                  <div class="mb-2">
+                    <select id="doctorSelect" class="form-select">
+                      <option value="">Seleccione doctor…</option>
+                      <option>Dr. Carlos Rojas — Medicina General</option>
+                      <option>Dra. Laura Méndez — Pediatría</option>
+                      <option>Dr. Andrés Salas — Dermatología</option>
+                    </select>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-6 mb-2"><input id="fechaSelect" type="date" class="form-control"></div>
+                    <div class="col-6 mb-2"><input id="horaSelect" type="time" class="form-control"></div>
+                  </div>
+
+                  <div class="mb-3"><textarea id="motivoTxt" class="form-control" rows="2" placeholder="Motivo"></textarea></div>
+
+                  <button id="btnAgregarCita" class="btn btn-moss w-100" type="submit">Guardar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- LISTA DE CITAS -->
+          <div class="col-lg-7">
+            <div class="card shadow-sm">
+              <div class="card-header bg-cream fw-semibold">
+                <i class="bi bi-clock-history me-1"></i> Historial de citas
+              </div>
+
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table align-middle">
+                    <thead>
+                      <tr>
+                        <th></th><th>Paciente</th><th>Doctor</th><th>Fecha</th><th>Hora</th><th>Motivo</th><th class="text-end">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-citas"></tbody>
+                  </table>
+                </div>
+                <small class="text-secondary">Usa los botones para Confirmar / Eliminar.</small>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================== DOCTOR ====================== -->
+      <section id="doctor" class="mc-section d-none">
+        <div class="card shadow-sm">
+          <div class="card-header bg-cream fw-semibold"><i class="bi bi-journal-medical me-1"></i> Agenda del doctor</div>
+          <div class="card-body">
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <select id="filtroDoctor" class="form-select">
+                  <option value="">Todos</option>
+                  <option>Dr. Carlos Rojas — Medicina General</option>
+                  <option>Dra. Laura Méndez — Pediatría</option>
+                  <option>Dr. Andrés Salas — Dermatología</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <input id="filtroFecha" type="date" class="form-control">
+              </div>
+              <div class="col-md-4 d-grid">
+                <button id="btnFiltrar" class="btn btn-moss">Aplicar filtros</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table align-middle">
+                <thead>
+                  <tr><th>Paciente</th><th>Especialista</th><th>Fecha</th><th>Hora</th><th>Motivo</th><th class="text-end">Estado</th></tr>
+                </thead>
+                <tbody id="tbody-agenda"></tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== ADMIN ====================== -->
+      <section id="admin" class="mc-section d-none">
+        <div class="row g-4">
+
+          <!-- FORM USUARIOS -->
+          <div class="col-lg-5">
+            <div class="card shadow-sm">
+              <div class="card-header bg-cream fw-semibold"><i class="bi bi-person-plus me-1"></i> Registrar usuario</div>
+              <div class="card-body">
+
+                <form id="formUsuario">
+                  <div class="mb-2"><input id="usuarioNombre" class="form-control" placeholder="Nombre"></div>
+                  <div class="mb-2"><input id="usuarioCorreo" type="email" class="form-control" placeholder="Correo"></div>
+                  <div class="mb-3">
+                    <select id="usuarioRol" class="form-select">
+                      <option value="">Rol…</option>
+                      <option>Paciente</option>
+                      <option>Doctor</option>
+                      <option>Administrador</option>
+                    </select>
+                  </div>
+                  <button id="btnAgregarUsuario" class="btn btn-moss w-100" type="submit">Guardar</button>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLA USUARIOS -->
+          <div class="col-lg-7">
+            <div class="card shadow-sm h-100">
+              <div class="card-header bg-cream fw-semibold">
+                <i class="bi bi-people me-1"></i> Usuarios
+              </div>
+
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table align-middle">
+                    <thead>
+                      <tr><th></th><th>Nombre</th><th>Correo</th><th>Rol</th><th class="text-end">Acción</th></tr>
+                    </thead>
+                    <tbody id="tbody-usuarios"></tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================== SOPORTE ====================== -->
+      <section id="soporte" class="mc-section d-none">
+        <div class="card shadow-sm">
+          <div class="card-header bg-cream fw-semibold"><i class="bi bi-life-preserver me-1"></i> Soporte</div>
+          <div class="card-body">
+
+            <p class="mb-1"><i class="bi bi-telephone me-1"></i> <strong>+506 2222-0000</strong></p>
+            <p class="mb-4"><i class="bi bi-envelope me-1"></i> <strong>soporte@mediconnect.cr</strong></p>
+
+            <form id="formSoporte" class="row g-2">
+              <div class="col-md-4"><input id="sopNombre" class="form-control" placeholder="Nombre"></div>
+              <div class="col-md-4"><input id="sopCorreo" type="email" class="form-control" placeholder="Correo"></div>
+              <div class="col-md-4"><button class="btn btn-moss w-100" type="submit">Enviar</button></div>
+            </form>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="py-4 bg-moss-deep text-white">
+    <div class="container small d-flex justify-content-between">
+      <span>© <span id="anio"></span> MediConnect</span>
+      <span class="opacity-75"> soporte@mediconnect.cr</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+
+:root{
+  --moss:#304f3f;
+  --moss-2:#3d6b55;
+  --cream:#fbf7ec;
+  --ink:#1f2a26;
+}
+
+html, body{
+  color: var(--ink);
+  background-color: var(--cream);
+  min-height: 100vh;
+}
+
+.bg-moss{
+  background: linear-gradient(180deg, #fbf7ec, #f7f3e7 60%, #f3efe3);
+}
+
+.bg-moss-deep{
+  background-color: var(--moss);
+}
+
+.bg-cream{
+  background-color: var(--cream);
+}
+
+.hero-gradient{
+  background: radial-gradient(1200px 500px at 10% 0%, var(--moss-2), var(--moss));
+  color: white;
+}
+
+.card{
+  border-radius: 1rem;
+  border: none;
+  overflow: hidden;
+}
+
+.card .card-header{
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background-color: var(--cream);
+  border-bottom: 1px solid #eee3c8;
+}
+
+.table thead th{
+  background: #f7f3e7;
+  border-bottom: 2px solid #eee3c8;
+}
+
+.btn-moss{
+  background: var(--moss);
+  color: #fff;
+  border: 0;
+}
+
+.btn-moss:hover{
+  background: #244033;
+  color: #fff;
+}
+
+.btn-cream{
+  background: var(--cream);
+  border: 1px solid #e9e1cb;
+}
+
+.mc-section{
+  animation: fade .25s ease;
+}
+
+@keyframes fade{
+  from{
+    opacity: .6;
+    transform: translateY(6px);
+  }
+  to{
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.table td, .table th{
+  vertical-align: middle;
+}
+
+.table .text-end button{
+  min-width: 70px;
+}
+
+.navbar-brand{
+  font-size: 1.25rem;
+}
+
+.nav-link{
+  cursor: pointer;
+}
+
+footer{
+  margin-top: 40px;
+  font-size: 0.9rem;
+}
